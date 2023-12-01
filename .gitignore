@@ -1,0 +1,31 @@
+# Directorios de node y vendor
+back-movil-hub/node_modules/
+front-movil-hub/node_modules/
+back-movil-hub/vendor/
+front-movil-hub/vendor/
+
+# Archivos de entorno
+**/.env
+**/.env.local
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Carpeta de construcción de React
+front-movil-hub/build/
+
+# Archivos de Laravel compilados y caché
+back-movil-hub/bootstrap/cache/*.php
+back-movil-hub/storage/*.key
+back-movil-hub/storage/framework/sessions/*
+back-movil-hub/storage/framework/views/*
+back-movil-hub/storage/framework/cache/data/*
+back-movil-hub/storage/logs/
+
+# Archivos de instaladores que no deben estar en el control de versiones
+*.msi
+
+# Carpetas específicas que podrías querer excluir
+node_modules/
+vendor/

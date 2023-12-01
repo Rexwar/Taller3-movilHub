@@ -6,3 +6,7 @@ post 127.0.0.1:8000/api/login?email=Aaaa@aaa.a&password=aaaaaa
 post 127.0.0.1:8000/api/login?email=rey.valdes@alumnos.ucn.cl&password=contrasenia
 {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzAxMzc5NjU0LCJleHAiOjE3MDEzODMyNTQsIm5iZiI6MTcwMTM3OTY1NCwianRpIjoicGdZalFVNzhNRGtrbVZnRSIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.i4KkUuzKpaHlJHs6DeKJ5t_bthb4Kwq0EO_M3Lb_l1A"}
 
+rutas sin proteccion
+get 127.0.0.1:8000/api/users
+
+con proteccion
