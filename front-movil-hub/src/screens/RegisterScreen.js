@@ -39,15 +39,42 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const Registrarse = async () => {
-    await agent.requests.post("/register", {
-      nombre: nombre,
+    console.log({
+      name: nombre,
       rut: rut,
       email: email,
       birthdate: inputDate,
-    });
-    console.log("Registrado con exito");
-    navigation.navigate("Perfil");
+    })
+    await fetch("http://192.168.56.1:8000/api/register/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: nombre,
+        rut: rut,
+        email: email,
+        birthdate: inputDate,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Respuesta del servidor:", data);
+        //navigation.navigate("Perfil");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
+
+  // const Registrarse = async () => {
+  //   await agent.requests.post("/register", {
+  //     nombre: nombre,
+  //     rut: rut,
+  //     email: email,
+  //     birthdate: inputDate,
+  //   });
+  //   console.log("Registrado con exito");
+  //   navigation.navigate("Perfil");
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,6 +95,9 @@ const RegisterScreen = ({ navigation }) => {
           placeholder="nombre completo"
           style={{ opacity: 0.6, flex: 1, paddingVertical: 0 }}
           secureTextEntry={false}
+          onChangeText={(d) => {
+            setNombre(d);
+          }}
         />
       </View>
       {/*------------------------------------*/}
@@ -81,6 +111,9 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput
           placeholder="Correo electronico"
           style={{ opacity: 0.6, flex: 1, paddingVertical: 0 }}
+          onChangeText={(d) => {
+            setEmail(d);
+          }}
         />
       </View>
       {/*------------------------------------*/}
@@ -95,6 +128,9 @@ const RegisterScreen = ({ navigation }) => {
           placeholder="Rut: 12.345.678-k"
           style={{ opacity: 0.6, flex: 1, paddingVertical: 0 }}
           secureTextEntry={false}
+          onChangeText={(d) => {
+            setRut(d);
+          }}
         />
       </View>
       {/*------------------------------------*/}
@@ -104,9 +140,9 @@ const RegisterScreen = ({ navigation }) => {
           locale="es"
           label=""
           value={inputDate}
-          onChange={(d) => {
-            setInputDate(d);
-            console.log(d);
+          onChange={(text) => {
+            setInputDate(text);
+            console.log(text);
           }}
           inputMode="start"
         />

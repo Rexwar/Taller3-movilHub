@@ -19,13 +19,47 @@ class AuthController extends Controller
         //validamos la data recibida para registro
         //el confirmed de password se encarga de solicitar el campo de confirmacion de contraseña para el registro
         //lo que realiza internamente es buscar un campo llamado password_confirmation y compararlo con el campo password
+        
+        $rules = [
+            'name' => 'required|string',
+            'email' => [
+                'required',
+                'email',
+                'max:100',
+                'unique:users',
+                'regex:/^([a-zA-Z0-9_.+-]+)@((ucn.cl)|(alumnos.ucn.cl)|(disc.ucn.cl)|(ce.ucn.cl))$/'
+            ],
+            'birthdate' => 'required|date',
+            'rut' => [
+                'required',
+                'string',
+                'max:12',
+                'unique:users',
+                'cl_rut'
+            ],
+        ];
+
+        // Mensajes de error personalizados para las reglas de validación
+        $messages = [
+            'rut.unique' => 'El RUT ya está registrado.',
+            'email.unique' => 'El correo ya está registrado.',
+            'name.required' => 'El nombre es obligatorio.',
+            'email.regex' => 'El correo debe pertenecer al dominio UCN.',
+            'rut.cl_rut' => 'El RUT no es válido o no tiene un dígito verificador correcto.',
+        ];
+
+        
+        
         try {
-            $this->validate($request, [
-                'name' => 'required|string',
-                'email' => 'required|email|max:100|unique:users',
-                'birthdate' => 'required|date',
-                'rut' => 'required|string|max:12',
-            ]);
+            $request->validate($rules, $messages);
+
+            // $this->validate($request, [
+            //     'name' => 'required|string',
+            //     'email' => 'required|email|max:100|unique:users',
+            //     'birthdate' => 'required|date',
+            //     'rut' => 'required|string|max:12|unique:users|cl_rut',
+                
+            // ]);
             
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e->errors(), 400);
