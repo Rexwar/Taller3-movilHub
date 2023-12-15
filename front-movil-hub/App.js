@@ -1,13 +1,13 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { AuthProvider } from './context/AuthContext';
-import LoginScreen from './screens/LoginScreen';
-import SecScreen from './screens/sec';
+import { NavigationContainer } from "@react-navigation/native";
+import { AuthProvider } from "./src/context/AuthContext";
+import AuthStack from "./src/navigation/AuthStack";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <LoginScreen></LoginScreen>
-    </AuthProvider>
+    <NavigationContainer>
+      <AuthProvider>
+        <AuthStack></AuthStack>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
-

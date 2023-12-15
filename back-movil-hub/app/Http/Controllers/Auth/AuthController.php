@@ -22,9 +22,11 @@ class AuthController extends Controller
         try {
             $this->validate($request, [
                 'name' => 'required|string',
-                'email' => 'required|email|max:200|unique:users',
-                'password' => 'required|min:6|confirmed'
+                'email' => 'required|email|max:100|unique:users',
+                'birthdate' => 'required|date',
+                'rut' => 'required|string|max:12',
             ]);
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e->errors(), 400);
         }
@@ -34,17 +36,20 @@ class AuthController extends Controller
         //create es de la clase Model
         $user = User::create([
             'name' => $request->name,
+            'rut' => $request->rut,
             'email' => $request->email,
+            'birthdate' => $request->birthdate,
             //encriptamos la contraseña
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->rut),
         ]);
 
         $token = JwTAuth::fromUser($user);
 
-        //lo que hace el return es devolver un json con el usuario creado y el token de autenticacion
+        //lo que hace el return es devolver un json con el correo del usuario creado y el token de autenticacion
         return response()->json([
-            'user' => $user,
-            'token' => $token
+            'email' => $user->email,
+            'token' => $token,
+            'id' => $user->id
         ], 201);
     }
 
