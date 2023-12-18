@@ -22,7 +22,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
 
   const irAlRegistro = () => {
     setEmail("");
@@ -33,78 +34,50 @@ const LoginScreen = ({ navigation }) => {
   const storeToken = async (value) => {
     try {
       await AsyncStorage.multiSet([['my-token', value],['email', email]]);
+      console.log("token guardado! ");
     } catch (e) {
-      console.log(e)
+      console.log("falló el almacenamiento: ", e);
     }
   };
 
-  const manejarInicio = () => {
+  const manejarInicio = async () => {
     console.log("Email: ", email);
     console.log("Password: ", password);
-
-    axios({
-      method: "post",
-      responseType: "json",
-      url: "http://192.168.56.1:8000/api/login/",
-      data: {
-        email: email,
-        password: password,
-      },
-    })
-      .then((response) => {
-        console.log("Respuesta del servidor:", response.data);
-        
-        if (response.data.token){
-          storeToken(response.data.token)
-          //navigation.navigate("Profile")
-          navigation.navigate("Perfil")
-        }
-        // Aquí puedes manejar la respuesta exitosa
-      })
-      .catch((error) => {
-        if (error.response) {
-          // La solicitud fue hecha y el servidor respondió con un estado de error
-          console.log("Error de respuesta:", error.response.data);
-          //
-          const errors = error.response.data.errors;
-          let errorMessages = "";
-          for (let key in errors) {
-            errors[key].forEach((message) => {
-              errorMessages += `${message}\n`;
-            });
-          }
-
-          Alert.alert("Ha ocurrido algo! ", errorMessages);
-          setErrorMessage(error.response.data.errors);
-          console.log("Estado:", error.response.status);
-          console.log("Headers:", error.response.headers);
-          setErrorMessage(error.response.data);
-        } else if (error.request) {
-          // La solicitud fue hecha pero no se recibió respuesta
-          console.log("Error de solicitud:", error.request);
-          setErrorMessage(error.request);
-        } else {
-          // Algo sucedió al configurar la solicitud
-          console.log("Error:", error.message);
-          setErrorMessage(error.message);
-        }
-        console.log("Configuración de la solicitud:", error.config);
+  
+    try {
+      const response = await fetch("http://192.168.56.1:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
       });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log("Error de respuesta:", errorData);
+        if (errorData.errors) {
+          setErrorEmail(errorData.errors.email ? errorData.errors.email[0] : "");
+          setErrorPassword(errorData.errors.password ? errorData.errors.password[0] : "" );
+        }
+      } else {
+        const responseData = await response.json();
+        console.log("LOGIN - Respuesta del servidor:", responseData);
+        if (responseData.token) {
+          storeToken(responseData.token);
+          navigation.navigate("Perfil");
+        }
+      }
+    } catch (error) {
+      console.log("Error:", error.message);
+    }
   };
+  
 
-  //funcion para enviar los datos al backend
-  // const handleLogin = (data) => {
-  //   agent.Login.login(data.email, data.password)
-  //     .then((response) => {
-  //       if (response.token) {
-  //         //AsyncStorage.setItem("AccessToken", response.token)
-  //         navigation.replace("Reserva");
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -136,6 +109,8 @@ const LoginScreen = ({ navigation }) => {
             value={email}
           />
         </View>
+        { errorEmail ? <Text style={styles.errorMensaje}> {errorEmail} </Text> : <View style={styles.errorPlaceholder} /> }
+        {/*--------------------------------------- */}
         <View style={styles.inputContainer}>
           <Ionicons
             style={{ marginRight: 10 }}
@@ -151,14 +126,8 @@ const LoginScreen = ({ navigation }) => {
             value={password}
           />
         </View>
-        <View style={{ alignItems: "flex-end" }}>
-          <TouchableOpacity
-            style={{ paddingTop: 20, paddingRight: 20 }}
-            onPress={() => {}}
-          >
-            <Text style={{ color: "blue" }}>Olvidaste tu contraseña?</Text>
-          </TouchableOpacity>
-        </View>
+        {/*--------------------------------------- */}
+        {errorPassword ? <Text style={styles.errorMensaje}>{errorPassword}</Text> : <View style={styles.errorPlaceholder} />}
 
         <TouchableOpacity
           style={styles.botonIniciar}
@@ -229,19 +198,18 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     padding: 10,
     alignItems: "center",
-    marginHorizontal: 20,
+    marginHorizontal: 50,
     borderRadius: 10,
-    marginTop: 40,
+    marginTop: 60,
   },
   errorMensaje: {
     color: "red",
     fontSize: 14,
     marginTop: 5,
     marginLeft: 10,
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "red",
-    borderRadius: 5,
     padding: 5,
+  },
+  errorPlaceholder: {
+    height: 15,
   },
 });

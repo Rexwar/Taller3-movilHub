@@ -28,6 +28,11 @@ const RegisterScreen = ({ navigation }) => {
   const [rut, setRut] = useState("");
   const [email, setEmail] = useState("");
 
+  const [errorNombre, setErrorNombre] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorRut, setErrorRut] = useState("");
+  const [errorFecha, setErrorFecha] = useState("");
+
   const onDismissSingle = () => {
     setOpen(false);
   };
@@ -44,7 +49,7 @@ const RegisterScreen = ({ navigation }) => {
       rut: rut,
       email: email,
       birthdate: inputDate,
-    })
+    });
     await fetch("http://192.168.56.1:8000/api/register/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,10 +63,18 @@ const RegisterScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Respuesta del servidor:", data);
+          setErrorNombre(data.name ? data.name[0] : '');
+          setErrorEmail(data.email ? data.email[0] : '');
+          setErrorRut(data.rut ? data.rut[0] : '');
+        
         //navigation.navigate("Perfil");
       })
       .catch((error) => {
         console.error("Error:", error);
+        
+          // Aquí estableces los mensajes de error basados en la respuesta
+          
+        
       });
   };
 
@@ -97,9 +110,11 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry={false}
           onChangeText={(d) => {
             setNombre(d);
+            setErrorNombre("");
           }}
         />
       </View>
+      {errorNombre ? <Text style={styles.errorText}>{errorNombre}</Text> : <View style={styles.errorPlaceholder} />}
       {/*------------------------------------*/}
       <View style={styles.inputContainer}>
         <MaterialIcons
@@ -113,9 +128,11 @@ const RegisterScreen = ({ navigation }) => {
           style={{ opacity: 0.6, flex: 1, paddingVertical: 0 }}
           onChangeText={(d) => {
             setEmail(d);
+            setErrorEmail("");
           }}
         />
       </View>
+      {errorEmail ? <Text style={styles.errorText}>{errorEmail}</Text> : <View style={styles.errorPlaceholder} />}
       {/*------------------------------------*/}
       <View style={styles.inputContainer}>
         <Ionicons
@@ -130,9 +147,11 @@ const RegisterScreen = ({ navigation }) => {
           secureTextEntry={false}
           onChangeText={(d) => {
             setRut(d);
+            setErrorEmail("");
           }}
         />
       </View>
+      {errorRut ? <Text style={styles.errorText}>{errorRut}</Text> : <View style={styles.errorPlaceholder} />}
       {/*------------------------------------*/}
       <View style={styles.inputDate}>
         <Text>Fecha de nacimiento</Text>
@@ -232,15 +251,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 40,
   },
-  errorContainer: {
-    backgroundColor: "rgba(255, 0, 0, 0.2)", // Color de fondo rojo con transparencia
-    padding: 8,
-    marginTop: 8,
-    borderRadius: 4,
-    alignItems: "center",
-  },
   errorText: {
-    color: "red",
-    fontWeight: "bold",
+    color: 'red',
+    fontSize: 12,
+    marginLeft: 20,
+    marginTop: 5,
+  },
+  errorPlaceholder: {
+    height: 18, // Asegúrate de que este valor sea igual a la altura del texto de error para evitar el desplazamiento
   },
 });

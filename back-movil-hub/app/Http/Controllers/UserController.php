@@ -37,29 +37,36 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Mensajes de error personalizados para las reglas de validación
+        $messages = [
+            'email.email' => 'El correo debe ser válido.',
+            'email.max' => 'El correo no debe superar los 100 caracteres.',
+            'email.unique' => 'El correo ya está registrado.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'name.required' => 'El nombre es obligatorio.',
+            'name.min' => 'El nombre debe tener al menos 10 caracteres.',
+            'name.max' => 'El nombre no debe superar los 150 caracteres.',
+            'birth_date.required' => 'La fecha de nacimiento es obligatoria.',
+            'birth_date.date' => 'La fecha de nacimiento debe ser una fecha válida.',
+        ];
+
         // Validar los datos que se reciben
         $validatedData = $request->validate([
-            'email' => 'sometimes|required|email',
-            'password' => 'sometimes|required',
-            'name' => 'sometimes|required',
+            'email' => 'sometimes|required|email|max:100|unique:users',
+            'password' => 'sometimes|required|min:8',
+            'name' => 'sometimes|required|string|min:10|max:150',
             'birth_date' => 'sometimes|required|date',
-        ]);
+        ], $messages);
 
         // Encontrar el usuario
         $user = User::findOrFail($id);
 
-        // Actualizar solo los campos proporcionados
-        if ($request->has('email')) {
-            $user->email = $validatedData['email'];
-        }
+        // Actualizar los campos proporcionados
+        $user->fill($validatedData);
+
+        // Si se proporciona una nueva contraseña, encriptarla
         if ($request->has('password')) {
-            $user->password = bcrypt($validatedData['password']); // Encriptar contraseña
-        }
-        if ($request->has('name')) {
-            $user->name = $validatedData['name'];
-        }
-        if ($request->has('birth_date')) {
-            $user->birth_date = $validatedData['birth_date'];
+            $user->password = bcrypt($validatedData['password']);
         }
 
         $user->save();

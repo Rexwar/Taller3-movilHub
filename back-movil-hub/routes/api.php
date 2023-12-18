@@ -26,7 +26,7 @@ Route::middleware('jwt.verify')->group(function(){
     Route::get('users', [UserController::class, 'index']);
     //logout
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('/user', [UserController::class, 'findByEmail']);
 });
 //editar usuario
 Route::put('/user/{user}', [UserController::class,'update']);
-Route::get('/user', [UserController::class, 'findByEmail']);
