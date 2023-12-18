@@ -71,6 +71,8 @@ class AuthController extends Controller
             return response()->json($e->errors(), 400);
         }
         $cleanRut = str_replace(['.', '-'], '', $request->rut);
+        $cleanRut = substr($cleanRut, 0, -1);
+        
         //creamos el usuario
         //el metodo create recibe un array con los datos del usuario y lo crea en la base de datos
         //create es de la clase Model

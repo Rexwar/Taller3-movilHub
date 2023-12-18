@@ -17,39 +17,25 @@ const UserEditScreen = () => {
   const [token, setToken] = useState("");
   const [response, setResponse] = useState(false);
 
-  const cargarStorage = async () => {
-    //const email = "rey.valdes@alumnos.ucn.cl";
-    try {
-      const value = await AsyncStorage.getItem("email");
-      const tok = await AsyncStorage.getItem("my-token");
-      console.log("tok: ", tok);
-      setEmail(value);
-      obtenerUsuario();
-      setToken(tok); //  <-- token
-      console.log("token cargado: ", token);
-      
-      setResponse(true);
-        
-      
-    } catch (e) {
-      console.log("error: ", e);
-    }
-  };
+  
 
   const obtenerUsuario = async () => {
     try {
+      const tok = await AsyncStorage.getItem("my-token");
+      const value = await AsyncStorage.getItem("email");
+      //console.log("tokenANTES: ", tok);
+      //console.log("email: ", value);
       const response = await fetch(
         `http://192.168.56.1:8000/api/user?email=${email}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${tok}`,
           },
         }
       );
       if (!response.ok) {
         console.error("Error en la solicitud:", response.status);
         console.log("fecha: ", birthdate);
-        console.log("token: ", token);
         return;
       }
       const userData = await response.json();
@@ -62,7 +48,7 @@ const UserEditScreen = () => {
   };
 
   useEffect(() => {
-    cargarStorage();
+    obtenerUsuario();
     // Llamada a la API para obtener los datos del usuario
   }, []);
 
