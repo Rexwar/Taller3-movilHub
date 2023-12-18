@@ -26,6 +26,9 @@
    
    en terminal-2:
       1- "cd fro"  (pres tab luego enter)
-      1- "npm install"
-
+      2- "npm install"
+      3- "npx expo start"
+      4. preisonar "a" cuando cargue
+      5. selecionar dispositivo y presionar enter
+      6. 1ra ejecuccion tarda 40seg, ya despues baja a 5seg.
 

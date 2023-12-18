@@ -21,6 +21,7 @@ const UserEditScreen = () => {
 
   const obtenerUsuario = async () => {
     try {
+      //.
       const tok = await AsyncStorage.getItem("my-token");
       const value = await AsyncStorage.getItem("email");
       //console.log("tokenANTES: ", tok);
