@@ -15,8 +15,8 @@ const AuthStack = () => {
     <PaperProvider>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Perfil" component={UserEditScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Perfil" component={UserEditScreen} />
         {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
       </Stack.Navigator>
     </PaperProvider>

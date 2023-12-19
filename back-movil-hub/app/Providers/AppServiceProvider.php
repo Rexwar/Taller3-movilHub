@@ -21,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Validator::extend('cl_rut', function ($attribute, $value, $parameters, $validator) {
+            //si el rut no tiene puntos ni guion falla
+            
             // Elimina los puntos y el guion
             $rut = str_replace(['.', '-'], '', $value);
         

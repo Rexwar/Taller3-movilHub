@@ -29,13 +29,14 @@ class AuthController extends Controller
                 'unique:users',
                 'regex:/^([a-zA-Z0-9_.+-]+)@((ucn.cl)|(alumnos.ucn.cl)|(disc.ucn.cl)|(ce.ucn.cl))$/'
             ],
-            'birthdate' => 'required|date',
+            'birthdate' => ['required','regex:/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}$/'],
             'rut' => [
                 'required',
                 'string',
                 'max:12',
                 'unique:users',
-                'cl_rut'
+                'cl_rut',
+                'regex:/^\d{1,3}(?:\.\d{1,3}){2}-[\dkK]$/i'
             ],
         ];
 
@@ -52,6 +53,8 @@ class AuthController extends Controller
             'name.required' => 'El nombre es obligatorio.',
             'email.email' => 'El correo debe ser válido.',
             'name.min' => 'El nombre debe tener al menos 10 caracteres.',
+            'rut.regex' => 'El RUT debe contener puntos y guion.',
+            'birthdate.regex' => 'La fecha de nacimiento debe estar en el formato DD/MM/AAAA.',
         ];
 
 
@@ -72,7 +75,7 @@ class AuthController extends Controller
         }
         $cleanRut = str_replace(['.', '-'], '', $request->rut);
         $cleanRut = substr($cleanRut, 0, -1);
-        
+
         //creamos el usuario
         //el metodo create recibe un array con los datos del usuario y lo crea en la base de datos
         //create es de la clase Model

@@ -33,7 +33,6 @@ class User extends Authenticatable implements JWTSubject
 
     protected $casts = [
         'password' => 'hashed',
-        'birthdate' => 'datetime', // Asegúrate de que se maneje como un tipo de dato de fecha
     ];
 
     /**

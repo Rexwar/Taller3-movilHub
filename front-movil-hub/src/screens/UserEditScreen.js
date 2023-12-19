@@ -12,7 +12,7 @@ const UserEditScreen = () => {
   const [user, setUser] = useState({});
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [birthdate, setBirthdate] = useState(new Date());
+  const [birthdate, setBirthdate] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [token, setToken] = useState("");
   const [response, setResponse] = useState(false);
@@ -24,27 +24,31 @@ const UserEditScreen = () => {
       //.
       const tok = await AsyncStorage.getItem("my-token");
       const value = await AsyncStorage.getItem("email");
-      //console.log("tokenANTES: ", tok);
-      //console.log("email: ", value);
+      setEmail(value);
+      console.log("tokenANTES: ", tok);
+      console.log("email: ", value);
       const response = await fetch(
-        `http://192.168.56.1:8000/api/user?email=${email}`,
+        `http://192.168.56.1:8000/api/user?email=${value}`,
         {
           headers: {
+            method: "GET",
             Authorization: `Bearer ${tok}`,
           },
         }
       );
       if (!response.ok) {
+        //console.error("Error solicitud:", response);
         console.error("Error en la solicitud:", response.status);
         console.log("fecha: ", birthdate);
         return;
       }
       const userData = await response.json();
       setName(userData.name);
-      setBirthdate(userData.birthdate);
+      //setBirthdate(userData.birthdate);
+      console.log("birthdate: ", birthdate);
       //console.log("response: ", userData);
     } catch (error) {
-      console.error("Error en la solicitud:", error.message);
+      console.error("Error en la solicitud: aa", error.message);
     }
   };
 
@@ -74,8 +78,8 @@ const UserEditScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View>
-        {!response ? (
-          <Text>cargando</Text>
+        {!email ? (
+          <Text style={styles.cargando}>Cargando</Text>
         ) : (
           <Card style={styles.cardStyle2}>
             <Card.Title title="Perfil" subtitle={user.name} />
@@ -95,13 +99,22 @@ const UserEditScreen = () => {
                 value={email}
                 onChangeText={(text) => setEmail(text)}
               />
-              <DatePickerInput
+              
+               <TextInput
                 style={styles.date}
                 label="Fecha de Nacimiento"
+                placeholder="DD/MM/AAAA"
                 value={birthdate}
                 onChange={(date) => setBirthdate(date)}
-                locale={"es"}
+              /> 
+              <TextInput
+                label={"Nueva Contraseña"}
+                style={styles.pass}
+                placeholder="ingrese nueva contraseña"
+                value={newPassword}
+                onChangeText={(pass) => setNewPassword(pass)}
               />
+              <Text></Text>
             </Card.Content>
             <Card.Actions>
               <Button onPress={handleSave}>Guardar Cambios</Button>
@@ -123,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#dedede",
     margin: 8,
     borderRadius: 5,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   cardStyle2: {
     backgroundColor: "#fefede",
@@ -136,9 +149,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   input2: {
-    marginBottom: 40,
+    marginBottom: 5,
   },
   date: {
-    marginVertical: 20,
+    marginVertical: 10,
+  },
+  cargando: {
+    alignSelf: "center",
+    fontSize: 40,
+  },
+  password: {
+    marginVertical: 400,
   },
 });

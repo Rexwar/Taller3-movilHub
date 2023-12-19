@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('rut');
             $table->string('password');
-            $table->timestamp('birthdate')->nullable();
+            $table->string('birthdate');
             $table->rememberToken();
             $table->timestamps();
         });
