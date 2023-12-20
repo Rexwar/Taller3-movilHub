@@ -3,10 +3,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import { PaperProvider } from "react-native-paper";
 //borrar despues
 import UserEditScreen from "../screens/UserEditScreen";
+import RepoScreen from "../screens/RepoScreen";
+import InfoScreen from "../screens/InfoScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +18,8 @@ const AuthStack = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Perfil" component={UserEditScreen} />
-        {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+        <Stack.Screen name="Repos" component={RepoScreen} />
+        <Stack.Screen name="InfoScreen" component={InfoScreen} />
       </Stack.Navigator>
     </PaperProvider>
   );

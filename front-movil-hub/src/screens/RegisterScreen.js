@@ -14,15 +14,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Button } from "react-native-paper";
 
 import logo from "../../assets/logoMobileHub.png";
-import {
-  es,
-  DatePickerInput,
-  registerTranslation,
-} from "react-native-paper-dates";
-import agent from "../api/agent";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-registerTranslation("es", es);
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
+
 
 const RegisterScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState("");
@@ -44,7 +39,7 @@ const RegisterScreen = ({ navigation }) => {
     });
 
     try {
-      const response = await fetch("http://192.168.56.1:8000/api/register/", {
+      const response = await fetch(`${API_URL}/api/register/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

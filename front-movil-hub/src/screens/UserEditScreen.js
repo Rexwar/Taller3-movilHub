@@ -4,6 +4,7 @@ import { Card, Button, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {API_URL} from '@env';
 
 const UserEditScreen = ({ navigation }) => {
   const [user, setUser] = useState({});
@@ -23,7 +24,7 @@ const UserEditScreen = ({ navigation }) => {
       //console.log("token-cargado: ", tok);
       //console.log("email: ", value);
       const response = await fetch(
-        `http://192.168.56.1:8000/api/user?email=${value}`,
+        `${API_URL}/api/user?email=${value}`,
         {
           headers: {
             method: "GET",
@@ -41,8 +42,10 @@ const UserEditScreen = ({ navigation }) => {
         return;
       }
       //se recibe con datos extra asi que solo sacamos los datos que necesitamos
+      
       const userData = await response.json();
-      datosUser = {
+      console.log("userData: ", userData);
+      const datosUser = {
         name: userData.name,
         email: userData.email,
         birthdate: userData.birthdate,
@@ -50,7 +53,7 @@ const UserEditScreen = ({ navigation }) => {
       };
       //console.log("datosUser: ", datosUser);
       setUser(datosUser);
-      //console.log("user: ", user);
+      console.log("user: ", user);
     } catch (error) {
       console.error("Error en la solicitud: aa", error.message);
     }
@@ -62,15 +65,14 @@ const UserEditScreen = ({ navigation }) => {
   }, []);
 
   const handleSave = async () => {
-    console.log("tokenazoo: ", token);
-    console.log("updatedUser: ", user);
+    //console.log("tokenazoo: ", token);
+    //console.log("updatedUser: ", user);
     if (newPassword) {
       user.password = newPassword;
     }
-
     try {
       
-      const response = await fetch(`http://192.168.56.1:8000/api/userEdit`, 
+      const response = await fetch(`${API_URL}/api/userEdit`, 
       {
         method: "PUT",
         headers: {
@@ -97,7 +99,7 @@ const UserEditScreen = ({ navigation }) => {
         <View>
         <Button style={styles.buttonGit}
       icon={() => <Icon name="github" size={40} color="black" />} // Asegúrate de usar el nombre correcto del ícono
-      onPress={() => navigation.navigate("Git")}
+      onPress={() => navigation.navigate("Repos")}
     >
       Repositorios
     </Button>

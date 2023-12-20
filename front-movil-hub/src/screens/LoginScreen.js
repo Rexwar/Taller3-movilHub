@@ -7,15 +7,13 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import logo from "../../assets/logoMobileHub.png";
 
-import agent from "../api/agent";
-import axios from "axios";
+import { API_URL } from "@env";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -45,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
     console.log("Password: ", password);
   
     try {
-      const response = await fetch("http://192.168.56.1:8000/api/login/", {
+      const response = await fetch(`${API_URL}/api/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
