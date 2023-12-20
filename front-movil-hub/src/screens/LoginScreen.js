@@ -65,7 +65,7 @@ const LoginScreen = ({ navigation }) => {
         }
       } else {
         const responseData = await response.json();
-        console.log("LOGIN - Respuesta del servidor:", responseData);
+        //console.log("LOGIN - Respuesta del servidor:", responseData);
         if (responseData.token) {
           storeToken(responseData.token);
           navigation.navigate("Perfil");

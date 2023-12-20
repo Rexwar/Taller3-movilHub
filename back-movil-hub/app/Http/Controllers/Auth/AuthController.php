@@ -62,14 +62,6 @@ class AuthController extends Controller
         try {
             $request->validate($rules, $messages);
 
-            // $this->validate($request, [
-            //     'name' => 'required|string',
-            //     'email' => 'required|email|max:100|unique:users',
-            //     'birthdate' => 'required|date',
-            //     'rut' => 'required|string|max:12|unique:users|cl_rut',
-
-            // ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json($e->errors(), 400);
         }
