@@ -18,7 +18,14 @@ import logo from "../../assets/logoMobileHub.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_URL } from "@env";
 
-
+/**
+ * Pantalla de registro para usuarios.
+ * Permite a los usuarios registrarse en la aplicación proporcionando su nombre, correo electrónico, RUT y fecha de nacimiento.
+ * Incluye validaciones de los campos y manejo de errores.
+ *
+ * @param {object} navigation - Objeto de navegación para la transición entre pantallas.
+ * @returns {JSX.Element} Componente de la pantalla de registro.
+ */
 const RegisterScreen = ({ navigation }) => {
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
@@ -30,6 +37,13 @@ const RegisterScreen = ({ navigation }) => {
   const [errorRut, setErrorRut] = useState("");
   const [errorFecha, setErrorFecha] = useState("");
 
+
+  /**
+   * Maneja el proceso de registro del usuario.
+   * Realiza una solicitud POST al endpoint de registro con los datos del usuario.
+   * En caso de éxito, guarda el token y navega a la pantalla de perfil.
+   * En caso de error, muestra los mensajes de error correspondientes.
+   */
   const Registrarse = async () => {
     console.log({
       name: nombre,
@@ -70,7 +84,12 @@ const RegisterScreen = ({ navigation }) => {
       // Manejar errores de red u otros errores
     }
   };
-
+  
+  /**
+   * Almacena el token de autenticación en el almacenamiento local.
+   * 
+   * @param {string} value - Token de autenticación.
+   */
   const guardarToken = async (value) => {
     try {
       await AsyncStorage.setItem("my-token", value);
@@ -81,16 +100,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  // const Registrarse = async () => {
-  //   await agent.requests.post("/register", {
-  //     nombre: nombre,
-  //     rut: rut,
-  //     email: email,
-  //     birthdate: inputDate,
-  //   });
-  //   console.log("Registrado con exito");
-  //   navigation.navigate("Perfil");
-  // };
+
 
   return (
     <SafeAreaView style={styles.container}>

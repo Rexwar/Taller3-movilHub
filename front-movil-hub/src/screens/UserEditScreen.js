@@ -6,12 +6,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
 
+
+/**
+ * Pantalla de edición de usuario.
+ * Permite a los usuarios editar su información personal, como nombre, email, fecha de nacimiento y contraseña.
+ * Los cambios se envían a un servidor para su actualización.
+ *
+ * @param {object} navigation - Objeto de navegación para la transición entre pantallas.
+ * @returns {JSX.Element} Componente de la pantalla de edición de usuario.
+ */
 const UserEditScreen = ({ navigation }) => {
   const [user, setUser] = useState({});
   const [newPassword, setNewPassword] = useState("");
   const [token, setToken] = useState("");
   const [errors, setErrors] = useState({});
 
+   /**
+   * Obtiene los datos del usuario desde el servidor.
+   * Carga los datos del usuario almacenados en AsyncStorage y realiza una petición GET para obtener la información actual del usuario.
+   */
   const obtenerUsuario = async () => {
     // Resetear los errores
     setErrors({});
@@ -58,12 +71,20 @@ const UserEditScreen = ({ navigation }) => {
       console.error("Error en la solicitud: aa", error.message);
     }
   };
-
+/**
+   * Se ejecuta al montar y actualizar el componente.
+   * Llama a obtenerUsuario para cargar los datos del usuario.
+   */
   useEffect(() => {
     obtenerUsuario();
     // Llamada a la API para obtener los datos del usuario
   }, []);
 
+
+  /**
+   * Maneja el guardado de los cambios del usuario.
+   * Actualiza la información del usuario en el servidor. Si se proporciona una nueva contraseña, también se actualiza.
+   */
   const handleSave = async () => {
     //console.log("tokenazoo: ", token);
     //console.log("updatedUser: ", user);

@@ -1,3 +1,9 @@
+/**
+ * @format
+ * @flow strict-local
+ */
+
+
 import React, { useState } from "react";
 import {
   View,
@@ -17,18 +23,39 @@ import { API_URL } from "@env";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
+/**
+ * Pantalla de inicio de sesión para usuarios.
+ * Esta pantalla permite a los usuarios iniciar sesión en la aplicación utilizando su correo electrónico y contraseña.
+ * Incluye funcionalidades para navegar a la pantalla de registro y manejar la autenticación del usuario.
+ *
+ * @param {object} navigation - Objeto de navegación para la transición entre pantallas.
+ * @returns {JSX.Element} Componente de la pantalla de inicio de sesión.
+ */
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
 
+
+   /**
+   * Maneja la navegación a la pantalla de registro.
+   * Limpia los campos de correo electrónico y contraseña antes de navegar.
+   */
   const irAlRegistro = () => {
     setEmail("");
     setPassword("");
     navigation.navigate("Register");
   };
 
+
+  /**
+   * Almacena el token de autenticación en el almacenamiento local.
+   *
+   * @param {string} value - Token de autenticación.
+   */
   const storeToken = async (value) => {
     try {
       await AsyncStorage.multiSet([['my-token', value],['email', email]]);
@@ -38,6 +65,12 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+
+  /**
+   * Maneja el inicio de sesión del usuario.
+   * Realiza una solicitud POST al endpoint de inicio de sesión de la API con las credenciales del usuario.
+   * En caso de éxito, almacena el token y navega a la pantalla del perfil.
+   */
   const manejarInicio = async () => {
     console.log("Email: ", email);
     console.log("Password: ", password);
