@@ -7,7 +7,7 @@ Instrucciones para configurar y ejecutar el proyecto:
 1. Abre una terminal y sigue estos pasos:
    1. Cambia al directorio del backend:
       ```
-      cd back
+      cd back  (presionar tab autocompletado)
       ```
    2. Instala las dependencias de Composer:
       ```
@@ -44,7 +44,7 @@ Instrucciones para configurar y ejecutar el proyecto:
 1. Abre otra terminal y sigue estos pasos:
    1. Cambia al directorio del frontend:
       ```
-      cd fro
+      cd fro  (presionar tab autocompletado)
       ```
    2. Instala las dependencias de NPM:
       ```
