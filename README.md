@@ -1,34 +1,59 @@
 # Taller-3-movilHub
-   
-   php artisan serve --host 192.168.56.1
 
-   abrir carpeta de proyecto con "code ."
+Instrucciones para configurar y ejecutar el proyecto:
 
-   abrir 2 terminales:
+## Configurar y Ejecutar el Backend
 
-   en terminal-1:
-     1- "cd back"   (presionar tab luego enter)
-     2- "composer install" (2 min)
-     3-  configurar .env:
-         3.1- copiar .env.example y renombrarlo como .env
-         3.2  configurar base de datos , nombre database, password si corresponde
-     4- "php artisan key:generate"
-     5- "php artisan migrate"  (para crear la bd si no existe)
-     6- "php artisan jwt:secret"
-     7- "php artisan serve --host 192.168.56.1 " ( esa ip debes colocar la de tu ipconfig )
-      
+1. Abre una terminal y sigue estos pasos:
+   1. Cambia al directorio del backend:
+      ```
+      cd back
+      ```
+   2. Instala las dependencias de Composer:
+      ```
+      composer install
+      ```
+   3. Configura el archivo `.env`:
+      - Copia `.env.example` y renómbralo a `.env`.
+      - Configura la base de datos, nombre de la base de datos y contraseña, si corresponde.
+   4. Genera la clave de la aplicación:
+      ```
+      php artisan key:generate
+      ```
+   5. Ejecuta las migraciones para crear la base de datos:
+      ```
+      php artisan migrate
+      ```
+   6. Genera la clave JWT:
+      ```
+      php artisan jwt:secret
+      ```
+   7. Inicia el servidor:
+      ```
+      php artisan serve --host 192.168.56.1
+      ```
+      Nota: Reemplaza `192.168.56.1` con la IP de tu configuración de `ipconfig`.
 
-   ** POSTMAN **
-   al probar postman luego de iniciar el back
-   recuerda cambiar la ip por la tuya :O
-   Se usa esta ip a que al usar el emulador android o expo-go de un celular, estos no se conectan a localhost, sino a la ip de tu red
+### POSTMAN
 
-   
-   en terminal-2:
-      1- "cd fro"  (pres tab luego enter)
-      2- "npm install"
-      3- "npx expo start"
-      4. preisonar "a" cuando cargue
-      5. selecionar dispositivo y presionar enter
-      6. 1ra ejecuccion tarda 40seg, ya despues baja a 5seg.
+- Al probar con Postman después de iniciar el backend, recuerda cambiar la IP por la tuya.
+- Esta IP se utiliza porque al usar un emulador Android o Expo Go en un celular, estos no se conectan a `localhost`, sino a la IP de tu red.
 
+## Configurar y Ejecutar el Frontend
+
+1. Abre otra terminal y sigue estos pasos:
+   1. Cambia al directorio del frontend:
+      ```
+      cd fro
+      ```
+   2. Instala las dependencias de NPM:
+      ```
+      npm install
+      ```
+   3. Inicia Expo:
+      ```
+      npx expo start
+      ```
+   4. Presiona `a` cuando cargue.
+   5. Selecciona el dispositivo y presiona enter.
+   6. La primera ejecución tarda aproximadamente 40 segundos, luego baja a 5 segundos.
